@@ -15,7 +15,7 @@ app.get('/users/:id', function (req, res) {
   }, rand);
 });
 
-app.listen(3000);
+app.listen(3001);
 
 var users = [
   {id: 1, likes: 1},
