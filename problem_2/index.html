@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Asynchronous Challenge</title>
+  </head>
+  <body>
+    <h1>And the total likes are...</h1>
+    <div id="total-likes">
+      loading...
+    </div>
+
+    <script type="text/javascript">
+      function getIndividualUsersAsynchronously(users){
+        users.forEach(function(user){
+          getIndividualUser(user.id)
+        })
+      }
+
+      function getIndividualUser(id){
+        var indvUserRequest = new XMLHttpRequest
+        indvUserRequest.open('GET', '/users/'+id)
+        indvUserRequest.responseType = 'json'
+        indvUserRequest.addEventListener('load', function(){
+          console.log(indvUserRequest.response, "getIndividualUser")
+          total += indvUserRequest.response.likes
+          document.getElementById('total-likes').innerHTML = total
+        })
+        indvUserRequest.send()
+      }
+
+      var total = 0
+      //Get the array of objects
+      var usersRequest = new XMLHttpRequest;
+      usersRequest.open('GET', '/users');
+      usersRequest.responseType = 'json';
+      usersRequest.addEventListener('load', function () {
+        // Pass the array to the async request
+        getIndividualUsersAsynchronously(usersRequest.response)
+      });
+      usersRequest.send();
+    </script>
+
+  </body>
+</html>
